@@ -11,7 +11,7 @@
       <p class="fs-4">Lembaga Pemberdayaan Masyarakat Jawa Barat</p>
       <div class="p-1 m-1">
       <RouterLink class="m-1" v-if="isLoggedIn" to="/createpost">Tambah Data</RouterLink>
-      <RouterLink class="m-1" v-if="isLoggedIn" to="/listdata">List Data</RouterLink>
+      <RouterLink class="m-1" v-if="isLoggedIn" to="/preview">List Data</RouterLink>
       </div>
     </div>
     <div class="col-md-6 position-relative">

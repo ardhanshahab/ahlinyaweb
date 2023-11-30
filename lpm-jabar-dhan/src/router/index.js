@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/login.vue'
 import createpost from '../views/createpost.vue'
-import listdata from '../views/listdata.vue'
+import PreviewPage from '../views/PreviewPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,11 +22,8 @@ const router = createRouter({
       name: 'createpost',
       component: createpost
     },
-    {
-      path: '/listdata',
-      name: 'listdata',
-      component: listdata
-    },
+ 
+    { path: '/preview', component: PreviewPage, props: true },
     {
       path: '/about',
       name: 'about',

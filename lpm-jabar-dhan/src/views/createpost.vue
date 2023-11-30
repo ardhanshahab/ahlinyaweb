@@ -5,7 +5,7 @@
           <h4>Tambah Data</h4>
         </div>
         <div class="card-body">
-          <form @submit.prevent="submitted">
+          <form @submit.prevent="kirimData">
             <div class="form-floating">
               <input v-model="nama" type="text" class="form-control" id="floatingInput" placeholder="Nama" name="nama">
               <label for="floatingInput">Nama</label>
@@ -28,7 +28,7 @@
             </div>
             <div class="input-group ">
               <label class="input-group-text" for="jk">Jenis Kelamin</label>
-              <select class="form-select" id="jk" name="jk">
+              <select class="form-select" id="jk" name="jk" v-model="jk">
                 <option selected>Pilih</option>
                 <option value="L">Laki-laki</option>
                 <option value="P">Perempuan</option>
@@ -94,7 +94,7 @@
                 Saya menyatakan bahwa data yang diisikan adalah benar dan siap dipertanggungjawabkan apabila ditemukan ketidaksesuaian dalam data tersebut
               </label>
             </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+            <button class="btn btn-primary w-100 py-2" type="submit">Send</button>
             <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
           </form>
         </div>
@@ -104,10 +104,16 @@
 
 <script>
 import axios from 'axios';
+// import PreviewTable from './PreviewTable.vue'; // Import the new component
 
 export default {
+  // components: {
+  //   PreviewTable,
+  // },
   data() {
     return {
+      submittedData: {},
+      showPreview: false,
       nama: "",
       nik: null,
       nokk: null,
@@ -188,7 +194,63 @@ export default {
     kecamatanChanged() {
       this.fetchdesa();
     },
+
+    async kirimData() {
+
+      const randomTimeout = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+      await this.sleep(randomTimeout);
+
+    const formData = {
+      nama: this.nama,
+      nik: this.nik,
+      nokk: this.nokk,
+      umur: this.umur,
+      fotoktp: this.fotoktp,
+      jk: this.jk,
+      provinsi: this.provinsi,
+      kota: this.kota,
+      kecamatan: this.kecamatan,
+      desa: this.desa,
+      alamat: this.alamat,
+      rt: this.rt,
+      rw: this.rw,
+      beforecov: this.beforecov,
+      aftercov: this.aftercov,
+      alasan: this.alasan,
+      
+    };
+    this.submittedData = formData;
+    this.showPreview = true;
+    
+    console.log('Sending data to server:', formData);
+    console.log(this.showPreview);
+    this.$router.push({ path: '/preview', props: { submittedData: formData, showPreview: this.showPreview } });
+   
   },
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+  clearForm() {
+    
+    this.nama = "";
+    this.nik = null;
+    this.nokk = null;
+    this.umur = null;
+    this.fotoktp = "";
+    this.jk = "";
+    this.provinsi = "";
+    this.kota = "";
+    this.kecamatan = "";
+    this.desa = "";
+    this.alamat = "";
+    this.rt = "";
+    this.rw = "";
+    this.beforecov = "";
+    this.aftercov = "";
+    this.alasan = "";
+  
+    },
+  }
 };
 </script>
 
