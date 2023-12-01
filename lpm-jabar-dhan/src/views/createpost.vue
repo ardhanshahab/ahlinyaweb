@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid py-2">
-    <div class="card" style="width: 40rem;">
+    <div class="card" style="width: auto;">
         <div class="card-header">
           <h4>Tambah Data</h4>
         </div>
@@ -23,10 +23,10 @@
               <input type="file" class="form-control" id="fotoktp" name="fotoktp">
             </div>
             <div class="form-floating">
-              <input v-model="umur" type="number" class="form-control" id="floatingInput" placeholder="Umur" name="umur">
+              <input v-model="umur" type="number" @blur="validateUmur" class="form-control" id="floatingInput" placeholder="Umur" name="umur">
               <label for="floatingInput">Umur</label>
             </div>
-            <div class="input-group ">
+            <div class="input-group">
               <label class="input-group-text" for="jk">Jenis Kelamin</label>
               <select class="form-select" id="jk" name="jk" v-model="jk">
                 <option selected>Pilih</option>
@@ -89,12 +89,12 @@
               <label for="floatingInput">Alasan Membutuhkan Bantuan</label>
             </div>
             <div class="form-check text-start my-3">
-              <input class="form-check-input" type="checkbox" value="true" id="flexCheckDefault" name="pernyataan">
+              <input class="form-check-input" type="checkbox" value="true" v-model="pernyataanCeklis" id="flexCheckDefault" name="pernyataan">
               <label class="form-check-label" for="flexCheckDefault">
                 Saya menyatakan bahwa data yang diisikan adalah benar dan siap dipertanggungjawabkan apabila ditemukan ketidaksesuaian dalam data tersebut
               </label>
             </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Send</button>
+            <button class="btn btn-primary w-100 py-2" type="submit" :disabled="!pernyataanCeklis">Send</button>
             <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
           </form>
         </div>
@@ -112,6 +112,7 @@ export default {
   // },
   data() {
     return {
+      pernyataanCeklis: false,
       submittedData: {},
       showPreview: false,
       nama: "",
@@ -134,6 +135,7 @@ export default {
       beforecov: "",
       aftercov: "",
       alasan: "",
+      alamatError: "",
     };
   },
   computed:{
@@ -194,40 +196,75 @@ export default {
     kecamatanChanged() {
       this.fetchdesa();
     },
+    validateUmur() {
+      if (this.umur !== null && this.umur < 24) {
+        this.umurError = "Umur harus 25 tahun atau lebih";
+      } else {
+        this.umurError = "";
+      }
+    },
+    validateAlamat() {
+      const maxAlamatLength = 255;
+      if (this.alamat.length > maxAlamatLength) {
+        this.alamatError = `Alamat tidak boleh lebih dari ${maxAlamatLength} karakter`;
+      } else {
+        this.alamatError = "";
+      }
+    },
 
     async kirimData() {
-
       const randomTimeout = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
       await this.sleep(randomTimeout);
+      console.log(randomTimeout);
+      localStorage.setItem('loading', randomTimeout.toString());
 
-    const formData = {
-      nama: this.nama,
-      nik: this.nik,
-      nokk: this.nokk,
-      umur: this.umur,
-      fotoktp: this.fotoktp,
-      jk: this.jk,
-      provinsi: this.provinsi,
-      kota: this.kota,
-      kecamatan: this.kecamatan,
-      desa: this.desa,
-      alamat: this.alamat,
-      rt: this.rt,
-      rw: this.rw,
-      beforecov: this.beforecov,
-      aftercov: this.aftercov,
-      alasan: this.alasan,
-      
-    };
-    this.submittedData = formData;
-    this.showPreview = true;
-    
-    console.log('Sending data to server:', formData);
-    console.log(this.showPreview);
-    this.$router.push({ path: '/preview', props: { submittedData: formData, showPreview: this.showPreview } });
-   
-  },
-  sleep(ms) {
+      if (this.umurError) {
+        alert(this.umurError);
+        return;
+      }
+      if (this.alamatError) {
+        alert(this.alamatError);
+        return;
+      }
+
+      const formData = {
+        nama: this.nama,
+        nik: this.nik,
+        nokk: this.nokk,
+        umur: this.umur,
+        fotoktp: this.fotoktp,
+        jk: this.jk,
+        provinsi: this.provinsi,
+        kota: this.kota,
+        kecamatan: this.kecamatan,
+        desa: this.desa,
+        alamat: this.alamat,
+        rt: this.rt,
+        rw: this.rw,
+        beforecov: this.beforecov,
+        aftercov: this.aftercov,
+        alasan: this.alasan,
+      };
+
+      const formDataString = JSON.stringify(formData);
+
+      localStorage.setItem('submittedData', formDataString);
+
+      this.submittedData = formData;
+      this.showPreview = true;
+
+      console.log('Sending data to server:', formData);
+      console.log(this.showPreview);
+
+      this.$router.push({
+        path: '/preview',
+        props: {
+          submittedData: formData,
+          showPreview: this.showPreview,
+        },
+      });
+      },
+      sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
   clearForm() {
@@ -248,10 +285,9 @@ export default {
     this.beforecov = "";
     this.aftercov = "";
     this.alasan = "";
-  
     },
-  }
-};
+    },
+  };
 </script>
 
 <style>

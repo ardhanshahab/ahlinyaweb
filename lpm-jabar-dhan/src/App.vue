@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       isLoggedIn: localStorage.isLoggedIn,
+      isFooterFloating: false,
     };
   },
   methods: {
@@ -44,6 +45,7 @@ export default {
   mounted() {
     // Add an event listener to handle scroll events
     window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
   },
   beforeDestroy() {
     // Remove the event listener when the component is destroyed
@@ -71,21 +73,14 @@ nav {
 }
 
 footer{
-  padding: 10px;
-  color: white;
-  background-color: black;
-}
-
-.floating-footer {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  background-color: black;
-  color: white;
-  text-align: center;
   padding: 10px;
-  z-index: 1000; /* Ensure it's above other elements */
+  color: white;
+  background-color: black;
+  width: 100%;
+  z-index: 1000; 
 }
 
 nav a.router-link-exact-active {
@@ -110,7 +105,7 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 500px) {
   header {
     display: grid;
     place-items: center;
@@ -127,8 +122,8 @@ nav a:first-of-type {
     margin-left: -1rem;
     font-size: 1rem;
     display: flexbox;
-    padding: 1rem 0;
-    margin-top: 1rem;
+    padding: 2rem 0;
+    /* margin-top: 1rem; */
   }
 }
 </style>

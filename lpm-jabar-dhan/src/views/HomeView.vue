@@ -5,7 +5,7 @@
 <template>
 <div class="p-5 mb-4 bg-light rounded-3">
   <div class="container-fluid py-5 row">
-    <div class="col-md-6">
+    <div class="col-md">
       <h1 class="display-5 fw-bold">Selamat Datang di</h1>
       <h1 class="display-5 fw-bold">LPM Jabar</h1>
       <p class="fs-4">Lembaga Pemberdayaan Masyarakat Jawa Barat</p>
@@ -14,7 +14,7 @@
       <RouterLink class="m-1" v-if="isLoggedIn" to="/preview">List Data</RouterLink>
       </div>
     </div>
-    <div class="col-md-6 position-relative">
+    <div class="col-md position-relative">
       <div class="overlay"></div>
       <img src="https://d22gwcrfo2de51.cloudfront.net/wp-content/uploads/2023/02/19840722-Sejarah-Bandung-scaled.jpg" alt="gedung sate" style="width: 100%;">
     </div>
@@ -46,7 +46,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for the desired transparency */
+  background-color: rgba(255, 255, 255, 0.5);
 }
 a {
     background:    #6fa8dc;

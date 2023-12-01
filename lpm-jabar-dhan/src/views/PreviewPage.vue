@@ -1,22 +1,35 @@
 <template>
   <div>
-    <h1>This is the Preview Page</h1>
-    <!-- <router-view :submittedData="submittedData" v-if="showPreview" /> -->
+    <h4>This is the Preview Page</h4>
+    <h4>Lama Loading : {{ loading }} ms</h4>
+    <!-- <router-view :submittedData="bon" v-if="showPreview" /> -->
+    <div class="container">
+    <PreviewTable></PreviewTable>
+    </div>
   </div>
 </template>
 
 <script>
+import PreviewTable from './PreviewTable.vue';
 export default {
-  props: {
-    submittedData: Object,
+  components :{
+    PreviewTable,
   },
-  mounted() {
+  data() {
+    return {
+        loading : ''
+    }
+  },
+  mounted(){
     this.test();
   },
-  methods: {
+  methods:{
     test() {
-      console.log('submittedData in PreviewTable:', this.submittedData);
+      const storedRandomTimeoutString = localStorage.getItem('loading');
+      const storedRandomTimeout = parseInt(storedRandomTimeoutString, 10);
+      this.loading = storedRandomTimeout;
+      console.log(storedRandomTimeout);
     },
-  },
+  }
 };
 </script>
