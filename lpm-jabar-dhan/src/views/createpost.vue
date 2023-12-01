@@ -65,7 +65,7 @@
               </select>
             </div>
             <div class="form-floating">
-              <input v-model="alamat" type="text" class="form-control" id="floatingInput" placeholder="Alamat" name="alamat">
+              <input v-model="alamat" @blur="validateAlamat" type="text" class="form-control" id="floatingInput" placeholder="Alamat" name="alamat">
               <label for="floatingInput">Alamat</label>
             </div>
             <div class="form-floating">
